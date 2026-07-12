@@ -1,0 +1,468 @@
+[
+  {
+    "provider": "cortext",
+    "ok": true,
+    "error": "",
+    "ingest_seconds": 2.29,
+    "ingest_network_connections": 0,
+    "recall_network_connections": 0,
+    "tool_schema_count": 0,
+    "system_prompt_chars": 0,
+    "probes": [
+      {
+        "probe_id": "vet-supersession",
+        "packet": "- Updated \u2014 Bailey's vet appointment is now July 14 at 2pm with Dr. Okafor.\n- Heads up: the vet appointment was moved. It's now July 14 at 2pm, still with Dr. Okafor.\n- Heads up: the vet appointment was moved. It's now July 14 at 2pm, still with Dr. Okafor.\n- Noted: Bailey's vet appointment is July 12 at 9am with Dr. Okafor.\n- Tell me a joke about robots.\n- Tell me a joke about robots.",
+        "packet_chars": 388,
+        "packet_tokens": 97,
+        "recall_latency_ms": 11.80416697752662,
+        "matched_groups": [
+          "july",
+          "14",
+          "2pm|2 pm|14:00",
+          "okafor"
+        ],
+        "missed_groups": [
+          "bee|sting",
+          "benadryl"
+        ],
+        "stale_groups": [
+          "12|9am|9 am"
+        ],
+        "offline_ok": true,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "deploy-process",
+        "packet": "- Reminder about our team process: we deploy from the release branch, never from main.\n- Reminder about our team process: we deploy from the release branch, never from main.\n- Our staging server is at 10.0.4.7, in case I ask you about deploys later.\n- Our staging server is at 10.0.4.7, in case I ask you about deploys later.\n- Noted: staging lives at 10.0.4.7.\n- Heads up: the vet appointment was moved. It's now July 14 at 2pm, still with Dr. Okafor.",
+        "packet_chars": 452,
+        "packet_tokens": 113,
+        "recall_latency_ms": 17.103999998653308,
+        "matched_groups": [
+          "release",
+          "main",
+          "10.0.4.7"
+        ],
+        "missed_groups": [],
+        "stale_groups": [],
+        "offline_ok": true,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "auth-owner",
+        "packet": "- A new engineer joined us: Priya. She owns the auth service now.\n- A new engineer joined us: Priya. She owns the auth service now.\n- I booked Bailey's vet appointment: July 12 at 9am with Dr. Okafor.\n- I booked Bailey's vet appointment: July 12 at 9am with Dr. Okafor.\n- Heads up: the vet appointment was moved. It's now July 14 at 2pm, still with Dr. Okafor.\n- Heads up: the vet appointment was moved. It's now July 14 at 2pm, still with Dr. Okafor.",
+        "packet_chars": 451,
+        "packet_tokens": 113,
+        "recall_latency_ms": 14.752666000276804,
+        "matched_groups": [
+          "priya"
+        ],
+        "missed_groups": [],
+        "stale_groups": [],
+        "offline_ok": true,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "travel-plans",
+        "packet": "- Do you think it'll rain this weekend?\n- Do you think it'll rain this weekend?\n- Tell me a joke about robots.\n- Tell me a joke about robots.\n- Double espresso it is.\n- Heads up: the vet appointment was moved. It's now July 14 at 2pm, still with Dr. Okafor.",
+        "packet_chars": 257,
+        "packet_tokens": 64,
+        "recall_latency_ms": 15.529500000411645,
+        "matched_groups": [],
+        "missed_groups": [
+          "denver",
+          "august|aug 3|3",
+          "avis|rental"
+        ],
+        "stale_groups": [],
+        "offline_ok": true,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "language-preference",
+        "packet": "- Nice to meet you, Maya. I'll keep track of things as we go.\n- Reminder about our team process: we deploy from the release branch, never from main.\n- Tell me a joke about robots.\n- Tell me a joke about robots.\n- Our staging server is at 10.0.4.7, in case I ask you about deploys later.\n- Our staging server is at 10.0.4.7, in case I ask you about deploys later.",
+        "packet_chars": 362,
+        "packet_tokens": 90,
+        "recall_latency_ms": 16.121332999318838,
+        "matched_groups": [],
+        "missed_groups": [
+          "python"
+        ],
+        "stale_groups": [],
+        "offline_ok": true,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "unknown-bait",
+        "packet": "- Tell me a joke about robots.\n- Tell me a joke about robots.\n- Double espresso it is.\n- Do you think it'll rain this weekend?\n- Do you think it'll rain this weekend?\n- 15% of 240 is 36.",
+        "packet_chars": 186,
+        "packet_tokens": 46,
+        "recall_latency_ms": 16.50620801956393,
+        "matched_groups": [],
+        "missed_groups": [],
+        "stale_groups": [],
+        "offline_ok": true,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      }
+    ]
+  },
+  {
+    "provider": "holographic",
+    "ok": true,
+    "error": "",
+    "ingest_seconds": 0.08,
+    "ingest_network_connections": 0,
+    "recall_network_connections": 0,
+    "tool_schema_count": 2,
+    "system_prompt_chars": 237,
+    "probes": [
+      {
+        "probe_id": "vet-supersession",
+        "packet": "",
+        "packet_chars": 0,
+        "packet_tokens": 0,
+        "recall_latency_ms": 0.06404201849363744,
+        "matched_groups": [],
+        "missed_groups": [
+          "bee|sting",
+          "benadryl",
+          "july",
+          "14",
+          "2pm|2 pm|14:00",
+          "okafor"
+        ],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "deploy-process",
+        "packet": "",
+        "packet_chars": 0,
+        "packet_tokens": 0,
+        "recall_latency_ms": 0.0367090106010437,
+        "matched_groups": [],
+        "missed_groups": [
+          "release",
+          "main",
+          "10.0.4.7"
+        ],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "auth-owner",
+        "packet": "",
+        "packet_chars": 0,
+        "packet_tokens": 0,
+        "recall_latency_ms": 0.03912497777491808,
+        "matched_groups": [],
+        "missed_groups": [
+          "priya"
+        ],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "travel-plans",
+        "packet": "",
+        "packet_chars": 0,
+        "packet_tokens": 0,
+        "recall_latency_ms": 0.03999998443759978,
+        "matched_groups": [],
+        "missed_groups": [
+          "denver",
+          "august|aug 3|3",
+          "avis|rental"
+        ],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "language-preference",
+        "packet": "",
+        "packet_chars": 0,
+        "packet_tokens": 0,
+        "recall_latency_ms": 0.029292015824466944,
+        "matched_groups": [],
+        "missed_groups": [
+          "python"
+        ],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "unknown-bait",
+        "packet": "",
+        "packet_chars": 0,
+        "packet_tokens": 0,
+        "recall_latency_ms": 0.03145798109471798,
+        "matched_groups": [],
+        "missed_groups": [],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      }
+    ]
+  },
+  {
+    "provider": "holographic-tools",
+    "ok": true,
+    "error": "",
+    "ingest_seconds": 31.2,
+    "ingest_network_connections": 0,
+    "recall_network_connections": 0,
+    "tool_schema_count": 2,
+    "system_prompt_chars": 237,
+    "probes": [
+      {
+        "probe_id": "vet-supersession",
+        "packet": "",
+        "packet_chars": 0,
+        "packet_tokens": 0,
+        "recall_latency_ms": 0.13679201947525144,
+        "matched_groups": [],
+        "missed_groups": [
+          "bee|sting",
+          "benadryl",
+          "july",
+          "14",
+          "2pm|2 pm|14:00",
+          "okafor"
+        ],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "deploy-process",
+        "packet": "",
+        "packet_chars": 0,
+        "packet_tokens": 0,
+        "recall_latency_ms": 0.06166700040921569,
+        "matched_groups": [],
+        "missed_groups": [
+          "release",
+          "main",
+          "10.0.4.7"
+        ],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "auth-owner",
+        "packet": "",
+        "packet_chars": 0,
+        "packet_tokens": 0,
+        "recall_latency_ms": 0.05908301682211459,
+        "matched_groups": [],
+        "missed_groups": [
+          "priya"
+        ],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "travel-plans",
+        "packet": "",
+        "packet_chars": 0,
+        "packet_tokens": 0,
+        "recall_latency_ms": 0.06662498344667256,
+        "matched_groups": [],
+        "missed_groups": [
+          "denver",
+          "august|aug 3|3",
+          "avis|rental"
+        ],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "language-preference",
+        "packet": "",
+        "packet_chars": 0,
+        "packet_tokens": 0,
+        "recall_latency_ms": 0.04916699253953993,
+        "matched_groups": [],
+        "missed_groups": [
+          "python"
+        ],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "unknown-bait",
+        "packet": "",
+        "packet_chars": 0,
+        "packet_tokens": 0,
+        "recall_latency_ms": 0.052000017603859305,
+        "matched_groups": [],
+        "missed_groups": [],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      }
+    ]
+  },
+  {
+    "provider": "mem0",
+    "ok": true,
+    "error": "",
+    "ingest_seconds": 73.35,
+    "ingest_network_connections": 9,
+    "recall_network_connections": 1,
+    "tool_schema_count": 3,
+    "system_prompt_chars": 137,
+    "probes": [
+      {
+        "probe_id": "vet-supersession",
+        "packet": "## Mem0 Memory\n- User booked a vet appointment for dog Bailey on July 12, 2026 at 9:00 AM with Dr. Okafor\n- User's dog Bailey is allergic to bee stings and must be given Benadryl within 10 minutes of a sting\n- User Maya began using the assistant as her daily assistant on July 12, 2026\n- User works as a platform engineer at Meridian Robotics\n- User loves a double espresso in the morning and prefers it over drip coffee",
+        "packet_chars": 420,
+        "packet_tokens": 105,
+        "recall_latency_ms": 730.1607500121463,
+        "matched_groups": [
+          "bee|sting",
+          "benadryl",
+          "july",
+          "okafor"
+        ],
+        "missed_groups": [
+          "14",
+          "2pm|2 pm|14:00"
+        ],
+        "stale_groups": [
+          "12|9am|9 am"
+        ],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "deploy-process",
+        "packet": "## Mem0 Memory\n- User's team at Meridian Robotics deploys code from the release branch and never from the main branch\n- Noted's staging server is located at IP address 10.0.4.7, which may be referenced for future deployment discussions\n- User works as a platform engineer at Meridian Robotics\n- User prefers to use Python as the default language for new projects and will only use another language if the team requires it\n- User Maya began using the assistant as her daily assistant on July 12, 2026",
+        "packet_chars": 499,
+        "packet_tokens": 125,
+        "recall_latency_ms": 468.38845798629336,
+        "matched_groups": [
+          "release",
+          "main",
+          "10.0.4.7"
+        ],
+        "missed_groups": [],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "auth-owner",
+        "packet": "## Mem0 Memory\n- User works as a platform engineer at Meridian Robotics\n- User's team at Meridian Robotics deploys code from the release branch and never from the main branch\n- User prefers to use Python as the default language for new projects and will only use another language if the team requires it\n- User Maya began using the assistant as her daily assistant on July 12, 2026\n- Noted's staging server is located at IP address 10.0.4.7, which may be referenced for future deployment discussions",
+        "packet_chars": 499,
+        "packet_tokens": 125,
+        "recall_latency_ms": 534.3842500005849,
+        "matched_groups": [],
+        "missed_groups": [
+          "priya"
+        ],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "travel-plans",
+        "packet": "## Mem0 Memory\n- User Maya began using the assistant as her daily assistant on July 12, 2026\n- User's favorite hiking trail is the Ridgeline Loop, a roughly 7\u2011mile route\n- User works as a platform engineer at Meridian Robotics\n- User booked a vet appointment for dog Bailey on July 12, 2026 at 9:00 AM with Dr. Okafor\n- User prefers to use Python as the default language for new projects and will only use another language if the team requires it",
+        "packet_chars": 446,
+        "packet_tokens": 112,
+        "recall_latency_ms": 505.1755410095211,
+        "matched_groups": [],
+        "missed_groups": [
+          "denver",
+          "august|aug 3|3",
+          "avis|rental"
+        ],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "language-preference",
+        "packet": "## Mem0 Memory\n- User prefers to use Python as the default language for new projects and will only use another language if the team requires it\n- User works as a platform engineer at Meridian Robotics\n- User's team at Meridian Robotics deploys code from the release branch and never from the main branch\n- User Maya began using the assistant as her daily assistant on July 12, 2026\n- User requested an explanation of the technical differences between the TCP and UDP networking protocols.",
+        "packet_chars": 488,
+        "packet_tokens": 122,
+        "recall_latency_ms": 446.4983750076499,
+        "matched_groups": [
+          "python"
+        ],
+        "missed_groups": [],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      },
+      {
+        "probe_id": "unknown-bait",
+        "packet": "## Mem0 Memory\n- User Maya began using the assistant as her daily assistant on July 12, 2026\n- User's favorite hiking trail is the Ridgeline Loop, a roughly 7\u2011mile route\n- User works as a platform engineer at Meridian Robotics\n- User loves a double espresso in the morning and prefers it over drip coffee\n- User booked a vet appointment for dog Bailey on July 12, 2026 at 9:00 AM with Dr. Okafor",
+        "packet_chars": 395,
+        "packet_tokens": 99,
+        "recall_latency_ms": 436.97474998771213,
+        "matched_groups": [],
+        "missed_groups": [],
+        "stale_groups": [],
+        "offline_ok": false,
+        "answer": "",
+        "answer_matched": [],
+        "answer_missed": []
+      }
+    ]
+  }
+]
