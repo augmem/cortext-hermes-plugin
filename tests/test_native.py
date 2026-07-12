@@ -42,3 +42,9 @@ class ArtifactSelectionTests(unittest.TestCase):
     self.assertEqual({entry["target"] for entry in manifest["artifacts"]}, {"darwin-arm64", "darwin-x64", "linux-x64", "linux-arm64", "windows-x64"})
     for entry in manifest["artifacts"]:
       self.assertEqual(cortext_native.selected_artifact(entry["target"], root), root / "vendor" / entry["filename"])
+
+  def test_checked_in_model_chunks_reassemble_and_verify(self) -> None:
+    with tempfile.TemporaryDirectory() as directory:
+      model = cortext_native._materialize_model(str(Path(directory) / "memory.sqlite"))
+      self.assertEqual(model.stat().st_size, 141491936)
+      self.assertEqual(hashlib.sha256(model.read_bytes()).hexdigest(), "bf4c49954eccc65183f1a97e44606e86c7ee5a4fea500457124b687a3ec97898")
