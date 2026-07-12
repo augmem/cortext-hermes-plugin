@@ -30,11 +30,13 @@ class ProviderTests(unittest.TestCase):
     block = self.provider.prefetch("when is the vet?")
     self.assertIn("vet is July 14", block); self.assertNotIn("cortext", block.lower())
 
-  def test_action_gate_uses_natural_and_only_blocks_interrupt(self) -> None:
+  def test_action_gate_uses_boundary_and_only_blocks_interrupt(self) -> None:
+    # BOUNDARY forces the turn edge so retrieval (and the interrupt gate) runs;
+    # NATURAL never retrieves mid-episode, leaving the gate without candidates.
     self.engine.responses = [{"should_interrupt": True, "retrieved_memory": [{"text": "do not delete production"}]}]
     result = self.provider.pre_tool_call("terminal", {"command": "rm -rf prod"}, "task")
     self.assertEqual(result and result["action"], "block"); self.assertIn("do not delete production", result["message"] if result else "")
-    self.assertEqual(self.engine.calls[0][1], Retention.NATURAL)
+    self.assertEqual(self.engine.calls[0][1], Retention.BOUNDARY)
     self.engine.responses = [{"should_interrupt": False, "retrieved_memory": [{"text": "ignored"}]}]
     self.assertIsNone(self.provider.pre_tool_call("terminal", {"command": "pwd"}))
 
