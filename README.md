@@ -2,17 +2,99 @@
 
 ![Cortext memory flowing into Hermes](assets/cortext-hermes-social-preview.png)
 
-**Give Hermes durable, local memory in one Git install — no `pip install`, no
-runtime downloads, and no model-visible memory tools.**
+**Your Hermes agent forgets everything the moment a session ends. Two commands
+fix that — permanently, locally, invisibly.**
 
-`augmem/hermes` is a standalone [Hermes Agent](https://hermes-agent.nousresearch.com/)
-memory-provider plugin. It recalls useful prior context before each model call,
-stores interactions quietly in a local SQLite database, and can block a tool
-action only when Cortext's existing interrupt signal has relevant context.
+```bash
+hermes plugins install augmem/hermes --enable
+hermes config set memory.provider cortext
+```
+
+`augmem/hermes` gives [Hermes Agent](https://hermes-agent.nousresearch.com/)
+durable memory backed by [Cortext](https://github.com/augmem/cortext), a local
+neuromorphic memory engine. Everything your agent learns lands in a SQLite
+file on your machine. Nothing is sent to a memory API. No LLM summarizes your
+conversations. And the model never sees a memory tool — recalled facts simply
+arrive as prior context, as if the agent just… remembered.
+
+## What changes
+
+Tell Hermes something once. Close the session. Days later, in a brand-new
+session, it still knows.
+
+```text
+── Monday ────────────────────────────────────────────────
+you    › We deploy from the `release` branch, never `main`.
+         Staging is at 10.0.4.7 and the on-call runbook is in ops/RUNBOOK.md.
+hermes › Got it.
+         (session ends — nothing pinned, no notes file, no tool calls)
+
+── Friday, fresh session ─────────────────────────────────
+you    › Ship the fix.
+hermes › Cutting the release from `release` — you deploy from there,
+         not `main`. I'll verify against staging at 10.0.4.7 first.
+```
+
+This is what that unlocks in practice:
+
+- **A coding agent that knows your project.** Conventions, gotchas, "we tried
+  that and it broke prod" — retained across sessions without you re-explaining
+  or maintaining a notes file.
+- **A personal assistant that actually knows you.** Allergies, appointments,
+  preferences, the names that matter. Because memory is a local file, this is
+  finally private enough for the personal stuff.
+- **An ops agent with institutional memory.** Which host is flaky, what the
+  last incident looked like, which dashboard is the real one.
+- **Corrections that stick.** Cortext supersedes stale facts instead of
+  hoarding contradictions — tell it the appointment moved, and the old time
+  stops being recalled.
+
+Memory management is automatic. There is no "save this" command, no memory
+tool for the model to call (or forget to call), and no LLM in the loop
+deciding what to keep. Cortext's write gate, decay, and consolidation decide —
+deterministically, on your machine.
+
+## Proven cold-start recall
+
+Not a demo script — a live control/treatment test against Hermes 0.15.2 with
+`gpt-5.4-mini`:
+
+1. A first Hermes session stored a unique medical fact, then shut down.
+2. A new **control** session, with memory disabled and no prior chat history,
+   did not know the fact.
+3. A second new session, with only Cortext's reopened SQLite database,
+   recalled the secret identifier, treatment, and appointment details —
+   without using the word "Cortext."
+
+That is durable retrieval from disk, not conversation-history leakage.
+
+## Private by architecture, not by policy
+
+- Memories live in **one SQLite file** (default:
+  `$HERMES_HOME/cortext.sqlite`). Back it up, inspect it, delete it — it's
+  yours.
+- **Zero network calls.** No memory SaaS, no embedding API, no runtime
+  downloads. The local AIST encoder ships in the plugin and is
+  checksum-verified before use.
+- Works **fully offline** immediately after Git installation.
+
+## Invisible to the model
+
+This provider is intentionally silent:
+
+- no `cortext_*` tools for the model;
+- no system-prompt branding;
+- recalled facts arrive as plain prior context;
+- action gating processes tool intent with `Retention.NATURAL` and returns
+  Hermes's block directive only when Cortext says to interrupt *and*
+  retrieved context can explain why — so your agent can be stopped from
+  repeating a mistake it has already made.
+
+Text, WAV audio, and non-interlaced 8-bit PNG images work with no Python
+dependencies. Other image containers are skipped rather than silently adding
+or downloading a decoder.
 
 ## Install
-
-<!-- Git install and provider selection commands derived from plugin.yaml and Hermes provider name -->
 
 ```bash
 hermes plugins install augmem/hermes --enable
@@ -23,10 +105,38 @@ Restart Hermes (or its gateway) after installing. `--enable` enables the
 plugin; it does **not** select Hermes's active memory provider, so the second
 command remains required.
 
-## Why this exists
+The clone is intentionally large (~135 MB after model reassembly) — that is
+the price of a plugin that is ready to run offline the moment the clone
+finishes. See [How it ships](#how-it-ships) for why.
 
-Hermes installs Git plugins by cloning their files; it does not resolve Python
-dependencies. This repository therefore ships the complete local runtime:
+## Configuration
+
+Optional. Drop a `cortext.json` in your Hermes home
+(`$HERMES_HOME/cortext.json`) to tune behavior; every key has a sensible
+default:
+
+```json
+{
+  "db_path": "$HERMES_HOME/cortext.sqlite",
+  "focus": 0.55,
+  "sensitivity": 0.50,
+  "stability": 0.65,
+  "top_k": 6,
+  "auto_consolidate": true,
+  "ingest_media": true
+}
+```
+
+`focus`, `sensitivity`, and `stability` are Cortext's three homeostatic
+control knobs — retrieval selectivity, responsiveness to surprising input,
+and preference for durable context. `top_k` caps how many recalled memories
+are injected per turn.
+
+## How it ships
+
+Hermes installs Git plugins by cloning their files; it does not resolve
+Python dependencies. This repository therefore ships the complete local
+runtime:
 
 - A standard-library-only `ctypes` adapter over the Cortext C API.
 - Checked-in Cortext libraries for macOS arm64/x64, Linux x64/arm64, and
@@ -37,41 +147,6 @@ dependencies. This repository therefore ships the complete local runtime:
 - A generated SHA-256 manifest. The adapter refuses missing, unsupported, or
   tampered artifacts and never falls back to a system library or downloads
   code at runtime.
-
-The clone is intentionally large (the local AIST model is about 135 MB after
-reassembly). That is the tradeoff for a plugin that is ready to run offline
-immediately after Git installation.
-
-## What Hermes sees
-
-Nothing product-branded. This provider is intentionally silent:
-
-- no `cortext_*` tools for the model;
-- no system-prompt branding;
-- recalled facts arrive as plain prior context;
-- action gating processes tool intent with `Retention.NATURAL` and returns
-  Hermes's block directive only when Cortext says to interrupt and retrieved
-  context can explain why.
-
-Text, WAV audio, and non-interlaced 8-bit PNG images work with no Python
-dependencies. Other image containers are skipped rather than silently adding
-or downloading a decoder.
-
-## Proven cold-start recall
-
-<!-- Live E2E result derived from the verified Hermes 0.15.2 cold-start test -->
-
-The plugin was tested in an isolated Hermes 0.15.2 environment with a live
-`gpt-5.4-mini` control/treatment check:
-
-1. A first Hermes session stored a unique medical fact, then shut down.
-2. A new control session, with memory disabled and no prior chat history, did
-   not know the fact.
-3. A second new session, with only Cortext's reopened SQLite database, recalled
-   the secret identifier, treatment, and appointment details — without using
-   the word “Cortext.”
-
-That is durable retrieval, not conversation-history leakage.
 
 ## Supported platforms
 
@@ -88,6 +163,15 @@ That is durable retrieval, not conversation-history leakage.
 The exact version, target names, paths, and SHA-256 values are in
 [vendor/manifest.json](vendor/manifest.json). Artifact provenance is recorded
 in [vendor/PROVENANCE.md](vendor/PROVENANCE.md).
+
+## Under the hood
+
+Cortext is a C++20 memory engine with a graph-native long-term store,
+working memory, homeostatic control, and multimodal (text/audio/image)
+embeddings in a single retrieval space — no LLM in the memory loop. In blind
+LLM-judged benchmarks it matched or beat chat+RAG while using ~50× fewer
+context tokens per turn. Architecture, benchmarks, and the research paper
+live in the [Cortext repository](https://github.com/augmem/cortext).
 
 ## Verify or release
 
