@@ -24,7 +24,7 @@ PROVIDER_NAME, CONFIG_FILENAME = "cortext", "cortext.json"
 # focus/stability tuned on the bench scenario with single-ingest turns:
 # F=.45 T=.5 recalls 10/14 fact groups with zero stale leaks, stable across
 # 5 repeated runs (bench/README.md). The old F=.55/T=.65 measured 6/14.
-DEFAULTS: dict[str, Any] = {"db_path": "$HERMES_HOME/cortext.sqlite", "focus": .45, "sensitivity": .50, "stability": .50, "seam_user": True, "seam_pre_llm": True, "seam_post_llm": True, "seam_tool_results": True, "tool_result_max_chars": 1500, "auto_consolidate": True, "ingest_media": True}
+DEFAULTS: dict[str, Any] = {"db_path": "$HERMES_HOME/cortext.sqlite", "focus": .45, "sensitivity": .50, "stability": .50, "seam_user": True, "seam_pre_llm": True, "seam_post_llm": True, "seam_tool_results": True, "tool_result_max_chars": 1500, "context_engine": True, "auto_consolidate": True, "ingest_media": True}
 
 
 def load_config(hermes_home: str | Path | None = None) -> dict[str, Any]:
@@ -141,6 +141,17 @@ class CortextMemoryProvider(MemoryProvider):
     if len(text) > 40: self._ingest([MediaSignal("text", self._source("agent", "tool", _safe(str(tool_name or "tool"))), text=text)])
     return None
 
+  def context_snapshot(self, query: str) -> str:
+    """Recalled long-term memories plus active working memory, formatted for
+    injection. Used at compaction time, when working memory is the
+    replacement for the context being discarded (not a duplicate of it)."""
+    if not self._engine: return ""
+    try:
+      with self._lock: packet = self._process_text(query or "recent conversation context", self._source("agent", "compaction"), Retention.EPHEMERAL)
+      items = list(packet.get("retrieved_memory") or []) + list(packet.get("working_memory") or [])
+      return _format([item for item in items if isinstance(item, dict)])
+    except Exception as exc: logger.warning("Cortext compaction snapshot failed: %s", exc); return ""
+
   def on_session_end(self, messages: list[dict[str, Any]]) -> None:
     self._drain()
     if self._engine:
@@ -199,3 +210,12 @@ def _safe(value: str) -> str: return "".join(char if char.isalnum() or char in "
 def _key(session: str, turn: int, text: str) -> str: return f"{session}:{turn}:{hashlib.sha256(text.encode()).hexdigest()[:16]}" if turn and text else ""
 def register(ctx: Any) -> None:
   provider = CortextMemoryProvider(load_config(os.environ.get("HERMES_HOME"))); ctx.register_memory_provider(provider); ctx.register_hook("post_tool_call", provider.on_post_tool_call)
+  # Own compaction too, but only when Cortext is the selected memory provider:
+  # a context engine takes over context management for the whole agent.
+  try:
+    if provider._config.get("context_engine", True):
+      from hermes_cli.config import cfg_get
+      if str(cfg_get("memory.provider") or "") == PROVIDER_NAME:
+        from cortext_context import CortextContextEngine
+        ctx.register_context_engine(CortextContextEngine(provider))
+  except Exception as exc: logger.debug("Cortext context engine not registered: %s", exc)

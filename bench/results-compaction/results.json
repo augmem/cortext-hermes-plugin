@@ -1,0 +1,242 @@
+[
+  {
+    "arm": "full (no compaction)",
+    "hits": 14,
+    "total": 14,
+    "stale": 0,
+    "context_tokens": 6638,
+    "probes": {
+      "vet-supersession": {
+        "matched": [
+          "bee|sting",
+          "benadryl",
+          "july",
+          "14",
+          "2pm|2 pm|14:00",
+          "okafor"
+        ],
+        "missed": [],
+        "stale": [],
+        "answer": "Bailey is allergic to bee stings and needs Benadryl within 10 minutes of a sting. The appointment is July 14 at 2pm with Dr. Okafor."
+      },
+      "deploy-process": {
+        "matched": [
+          "release",
+          "main",
+          "10.0.4.7"
+        ],
+        "missed": [],
+        "stale": [],
+        "answer": "You deploy from the release branch, never from main. The staging server address is 10.0.4.7."
+      },
+      "auth-owner": {
+        "matched": [
+          "priya"
+        ],
+        "missed": [],
+        "stale": [],
+        "answer": "Priya."
+      },
+      "travel-plans": {
+        "matched": [
+          "denver",
+          "august|aug 3|3",
+          "avis|rental"
+        ],
+        "missed": [],
+        "stale": [],
+        "answer": "You\u2019re flying to Denver on August 3 for the robotics conference, and you reserved an Avis rental car for that trip."
+      },
+      "language-preference": {
+        "matched": [
+          "python"
+        ],
+        "missed": [],
+        "stale": [],
+        "answer": "Python"
+      }
+    }
+  },
+  {
+    "arm": "default summarizer",
+    "hits": 13,
+    "total": 14,
+    "stale": 0,
+    "context_tokens": 2191,
+    "probes": {
+      "vet-supersession": {
+        "matched": [
+          "bee|sting",
+          "benadryl",
+          "july",
+          "14",
+          "2pm|2 pm|14:00",
+          "okafor"
+        ],
+        "missed": [],
+        "stale": [],
+        "answer": "Bailey is allergic to bee stings and needs Benadryl within 10 minutes of a sting. The appointment is July 14 at 2pm with Dr. Okafor."
+      },
+      "deploy-process": {
+        "matched": [
+          "release",
+          "10.0.4.7"
+        ],
+        "missed": [
+          "main"
+        ],
+        "stale": [],
+        "answer": "From this conversation: deploy from the `release` branch, and the staging server address is `10.0.4.7`."
+      },
+      "auth-owner": {
+        "matched": [
+          "priya"
+        ],
+        "missed": [],
+        "stale": [],
+        "answer": "Priya owns the auth service."
+      },
+      "travel-plans": {
+        "matched": [
+          "denver",
+          "august|aug 3|3",
+          "avis|rental"
+        ],
+        "missed": [],
+        "stale": [],
+        "answer": "You\u2019re flying to Denver on August 3 for the robotics conference, and you have an Avis rental car reserved when you land."
+      },
+      "language-preference": {
+        "matched": [
+          "python"
+        ],
+        "missed": [],
+        "stale": [],
+        "answer": "Python."
+      }
+    },
+    "compaction_s": 8.73,
+    "compaction_net": 1
+  },
+  {
+    "arm": "default summarizer (aux LLM down)",
+    "hits": 0,
+    "total": 14,
+    "stale": 0,
+    "context_tokens": 716,
+    "probes": {
+      "vet-supersession": {
+        "matched": [],
+        "missed": [
+          "bee|sting",
+          "benadryl",
+          "july",
+          "14",
+          "2pm|2 pm|14:00",
+          "okafor"
+        ],
+        "stale": [],
+        "answer": "I don\u2019t know."
+      },
+      "deploy-process": {
+        "matched": [],
+        "missed": [
+          "release",
+          "main",
+          "10.0.4.7"
+        ],
+        "stale": [],
+        "answer": "I don\u2019t know."
+      },
+      "auth-owner": {
+        "matched": [],
+        "missed": [
+          "priya"
+        ],
+        "stale": [],
+        "answer": "I don't know."
+      },
+      "travel-plans": {
+        "matched": [],
+        "missed": [
+          "denver",
+          "august|aug 3|3",
+          "avis|rental"
+        ],
+        "stale": [],
+        "answer": "I don\u2019t know."
+      },
+      "language-preference": {
+        "matched": [],
+        "missed": [
+          "python"
+        ],
+        "stale": [],
+        "answer": "I don\u2019t know from this conversation."
+      }
+    },
+    "compaction_s": 0.63,
+    "compaction_net": 0
+  },
+  {
+    "arm": "cortext engine + provider",
+    "hits": 11,
+    "total": 14,
+    "stale": 0,
+    "context_tokens": 3242,
+    "probes": {
+      "vet-supersession": {
+        "matched": [
+          "july",
+          "14",
+          "2pm|2 pm|14:00",
+          "okafor"
+        ],
+        "missed": [
+          "bee|sting",
+          "benadryl"
+        ],
+        "stale": [],
+        "answer": "The appointment is July 14 at 2pm with Dr. Okafor.\n\nI don\u2019t know what the vet should know about Bailey from this conversation."
+      },
+      "deploy-process": {
+        "matched": [
+          "release",
+          "main",
+          "10.0.4.7"
+        ],
+        "missed": [],
+        "stale": [],
+        "answer": "We deploy from the release branch, never main. The staging server address is 10.0.4.7."
+      },
+      "auth-owner": {
+        "matched": [
+          "priya"
+        ],
+        "missed": [],
+        "stale": [],
+        "answer": "Priya owns the auth service."
+      },
+      "travel-plans": {
+        "matched": [
+          "denver",
+          "august|aug 3|3",
+          "avis|rental"
+        ],
+        "missed": [],
+        "stale": [],
+        "answer": "From this conversation, I only know you have **the Denver trip on August 3 for a robotics conference**, and that **Avis rental** was noted for that trip. I don\u2019t have enough information here to say what other upcoming travel plans you have or exactly how you\u2019re getting around when you land."
+      },
+      "language-preference": {
+        "matched": [],
+        "missed": [
+          "python"
+        ],
+        "stale": [],
+        "answer": "I don\u2019t know."
+      }
+    },
+    "compaction_s": 0.02,
+    "compaction_net": 0
+  }
+]
