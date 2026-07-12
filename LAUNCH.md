@@ -15,7 +15,7 @@ ships the whole local runtime: a standard-library `ctypes` adapter, native
 libraries for macOS, Linux, and Windows, plus its required model assets.
 
 ```bash
-hermes plugins install augmem/hermes --enable
+hermes plugins install augmem/cortext-hermes-plugin --enable
 hermes config set memory.provider cortext
 ```
 
@@ -27,7 +27,7 @@ session recalls a fact from SQLite while a no-memory control does not.
 
 Hermes plugins don’t run `pip install`. So we made memory installable anyway.
 
-`augmem/hermes` ships Cortext as a self-contained Git plugin: native runtime,
+`augmem/cortext-hermes-plugin` ships Cortext as a self-contained Git plugin: native runtime,
 model assets, checksum verification, local SQLite memory, and zero
 model-visible tools.
 
@@ -35,13 +35,13 @@ Fresh-session E2E: the no-memory control knew nothing; the Cortext-backed
 Hermes session recalled the exact fact from disk.
 
 ```bash
-hermes plugins install augmem/hermes --enable
+hermes plugins install augmem/cortext-hermes-plugin --enable
 hermes config set memory.provider cortext
 ```
 
 ## Launch checklist
 
-- Create the public `augmem/hermes` repository and push `main`.
+- Create the public `augmem/cortext-hermes-plugin` repository and push `main`.
 - Set `assets/cortext-hermes-social-preview.png` as the GitHub social preview.
 - Create the `v0.1.0` GitHub release using the release body above.
 - Run the `Build and verify Cortext vendor artifacts` workflow and attach its

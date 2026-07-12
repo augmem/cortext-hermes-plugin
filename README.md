@@ -6,11 +6,11 @@
 fix that — permanently, locally, invisibly.**
 
 ```bash
-hermes plugins install augmem/hermes --enable
+hermes plugins install augmem/cortext-hermes-plugin --enable
 hermes config set memory.provider cortext
 ```
 
-`augmem/hermes` gives [Hermes Agent](https://hermes-agent.nousresearch.com/)
+`augmem/cortext-hermes-plugin` gives [Hermes Agent](https://hermes-agent.nousresearch.com/)
 durable memory backed by [Cortext](https://github.com/augmem/cortext), a local
 neuromorphic memory engine. Everything your agent learns lands in a SQLite
 file on your machine. Nothing is sent to a memory API. No LLM summarizes your
@@ -136,7 +136,7 @@ or downloading a decoder.
 ## Install
 
 ```bash
-hermes plugins install augmem/hermes --enable
+hermes plugins install augmem/cortext-hermes-plugin --enable
 hermes config set memory.provider cortext
 ```
 
