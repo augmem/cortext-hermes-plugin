@@ -126,7 +126,7 @@ class CortextMemoryProvider(MemoryProvider):
     text = _intent(tool_name, args)
     if not text: return None
     try:
-      with self._lock: packet = self._process_text(text, self._source("agent", "tool_intent", task_id or str(self._turn_number)), Retention.NATURAL)
+      with self._lock: packet = self._process_text(text, self._source("agent", "tool_intent", task_id or str(self._turn_number)), Retention.BOUNDARY)
     except Exception as exc: logger.warning("Cortext tool gate failed: %s", exc); return None
     if not packet.get("should_interrupt"): return None
     context = _format([item for item in packet.get("retrieved_memory", []) if isinstance(item, dict)], min(2, int(self._config.get("top_k", 6))))
