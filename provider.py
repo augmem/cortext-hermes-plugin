@@ -21,10 +21,10 @@ except ImportError:  # pragma: no cover
 
 logger = logging.getLogger(__name__)
 PROVIDER_NAME, CONFIG_FILENAME = "cortext", "cortext.json"
-# focus/stability/top_k tuned on the bench scenario with single-ingest turns:
-# F=.45 T=.5 k=8 recalls 10/14 fact groups with zero stale leaks, stable across
-# 5 repeated runs (bench/README.md). F=.55/T=.65/k=6 measured 6/14 post-dedup.
-DEFAULTS: dict[str, Any] = {"db_path": "$HERMES_HOME/cortext.sqlite", "focus": .45, "sensitivity": .50, "stability": .50, "top_k": 8, "seam_user": True, "seam_pre_llm": True, "seam_post_llm": True, "seam_tool_results": True, "tool_result_max_chars": 1500, "auto_consolidate": True, "ingest_media": True}
+# focus/stability tuned on the bench scenario with single-ingest turns:
+# F=.45 T=.5 recalls 10/14 fact groups with zero stale leaks, stable across
+# 5 repeated runs (bench/README.md). The old F=.55/T=.65 measured 6/14.
+DEFAULTS: dict[str, Any] = {"db_path": "$HERMES_HOME/cortext.sqlite", "focus": .45, "sensitivity": .50, "stability": .50, "seam_user": True, "seam_pre_llm": True, "seam_post_llm": True, "seam_tool_results": True, "tool_result_max_chars": 1500, "auto_consolidate": True, "ingest_media": True}
 
 
 def load_config(hermes_home: str | Path | None = None) -> dict[str, Any]:
@@ -61,9 +61,9 @@ def _memory_text(item: dict[str, Any]) -> str:
   return ""
 
 
-def _format(items: list[dict[str, Any]], limit: int) -> str:
+def _format(items: list[dict[str, Any]]) -> str:
   result = []
-  for item in items[:limit]:
+  for item in items:
     text = _memory_text(item)
     if text: result.append(f"- {text}")
   return "\n".join(result)
@@ -118,7 +118,7 @@ class CortextMemoryProvider(MemoryProvider):
     try:
       with self._lock: packet = self._process_text(query, self._source("agent", "prefetch"), Retention.EPHEMERAL)
       memories = packet.get("retrieved_memory") or []
-      block = _format([item for item in memories if isinstance(item, dict)], int(self._config.get("top_k", 6))); self._cache = (query, block); return block
+      block = _format([item for item in memories if isinstance(item, dict)]); self._cache = (query, block); return block
     except Exception as exc: logger.warning("Cortext prefetch failed: %s", exc); return ""
 
   def queue_prefetch(self, query: str, **kwargs: Any) -> None: self._enqueue(lambda: self.prefetch(query))

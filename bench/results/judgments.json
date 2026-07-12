@@ -3,13 +3,13 @@
     "scores": {
       "mem0": 2,
       "tencentdb": 10,
-      "control": 1,
-      "holographic-tools": 1,
-      "holographic": 1,
+      "control": 10,
+      "holographic-tools": 10,
+      "holographic": 10,
       "cortext": 9
     },
-    "winner": "tencentdb",
-    "reason": "Reference facts say Bailey had a bee/sting issue, Benadryl, and the appointment is in July on the 14th at 2pm with Okafor. F gets the appointment details exactly right and correctly says it doesn\u2019t know the medical details, though it omits the bee sting/Benadryl facts. B is fully honest but gives no usable details. A invents the date, time, and a medication timing detail not in the facts. C, D, and E are honest but too vague and omit known facts.",
+    "winner": "tie",
+    "reason": "The reference facts say Bailey has a bee/sting issue, needs Benadryl, and the appointment is in July on the 14th at 2pm with Okafor. Answer F gets the appointment right and names Okafor, but omits the bee sting/Benadryl details and adds an unsupported claim that there are no medical details. Answers B, C, D, and E are honest about not knowing, which is acceptable when the answer is uncertain, though they miss the available facts. Answer A invents the wrong date/time and adds unsupported specifics, so it scores low.",
     "label_map": {
       "A": "mem0",
       "B": "tencentdb",
@@ -23,13 +23,13 @@
     "scores": {
       "holographic": 1,
       "control": 1,
-      "cortext": 8,
+      "cortext": 7,
       "mem0": 10,
       "holographic-tools": 1,
-      "tencentdb": 8
+      "tencentdb": 7
     },
     "winner": "mem0",
-    "reason": "D exactly matches the reference facts: deploy from release, not main, and staging server address 10.0.4.7. C and F get most of it right but omit the staging address. A, B, and E correctly admit uncertainty but fail to use the provided facts.",
+    "reason": "D exactly matches the reference facts: deploy from release, not main, and staging server 10.0.4.7. C and F get the branch right but omit the staging address. A, B, and E correctly admit lack of knowledge but ignore the provided facts, so they are incomplete.",
     "label_map": {
       "A": "holographic",
       "B": "control",
@@ -42,14 +42,14 @@
   "auth-owner": {
     "scores": {
       "cortext": 10,
-      "tencentdb": 0,
-      "mem0": 0,
-      "control": 0,
-      "holographic-tools": 0,
-      "holographic": 0
+      "tencentdb": 1,
+      "mem0": 1,
+      "control": 1,
+      "holographic-tools": 1,
+      "holographic": 1
     },
     "winner": "cortext",
-    "reason": "The reference fact says the auth service owner is Priya. Answer A states this correctly and directly. Answers B-F all fail to provide the known owner and instead say they don\u2019t know, which is incorrect given the reference facts.",
+    "reason": "The reference fact says the auth service owner is Priya. Answer A correctly states this. Answers B-F are honest about not knowing, but they fail to use the provided reference fact, so they are incomplete.",
     "label_map": {
       "A": "cortext",
       "B": "tencentdb",
@@ -69,7 +69,7 @@
       "holographic-tools": 2
     },
     "winner": "cortext",
-    "reason": "Reference facts indicate an upcoming Denver trip in August (Aug 3) with Avis/rental transportation on landing. C states both the Denver trip and Avis rental correctly and completely. E correctly mentions Avis car rental but misses the Denver/August trip details. A, B, D, and F are honest but fail to use the known facts.",
+    "reason": "C correctly uses all reference facts: the trip is to Denver, it\u2019s in August/around Aug 3, and transportation is an Avis rental car. E is partially correct because it mentions Avis rental but misses Denver and the date. The others mostly say they don\u2019t know, which is honest but incomplete given the available facts.",
     "label_map": {
       "A": "control",
       "B": "mem0",
@@ -89,7 +89,7 @@
       "cortext": 10
     },
     "winner": "tie",
-    "reason": "The reference fact says the scaffold language should be Python. E and F answer Python directly and correctly. A-D mostly recommend TypeScript or add unsupported alternatives, so they do not match the reference fact.",
+    "reason": "The reference fact is simply 'python'. Answers E and F correctly choose Python; E does so explicitly as the default scaffold language, and F is a direct one-word match. The other answers recommend TypeScript or provide mixed defaults that do not match the reference.",
     "label_map": {
       "A": "control",
       "B": "holographic",
@@ -109,7 +109,7 @@
       "holographic": 10
     },
     "winner": "tie",
-    "reason": "The reference facts are empty, so the correct response is to admit the information is unknown without inventing details. All answers do that appropriately; E adds a safe, relevant suggestion but is still correct. Since all are equally correct, A is chosen arbitrarily as the winner.",
+    "reason": "The reference facts are empty, so the correct response is to admit the information is unknown without inventing details. All answers do that appropriately.",
     "label_map": {
       "A": "control",
       "B": "holographic-tools",

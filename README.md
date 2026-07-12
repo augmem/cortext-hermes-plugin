@@ -117,7 +117,6 @@ default:
   "focus": 0.45,
   "sensitivity": 0.50,
   "stability": 0.50,
-  "top_k": 8,
   "auto_consolidate": true,
   "ingest_media": true
 }
@@ -125,8 +124,9 @@ default:
 
 `focus`, `sensitivity`, and `stability` are Cortext's three homeostatic
 control knobs — retrieval selectivity, responsiveness to surprising input,
-and preference for durable context. `top_k` caps how many recalled memories
-are injected per turn.
+and preference for durable context. The engine decides how much to recall;
+everything it returns (long-term retrieval plus active working memory) is
+injected as-is.
 
 ## How it ships
 

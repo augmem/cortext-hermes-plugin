@@ -15,16 +15,20 @@ user identity so cloud-backed providers cannot carry memories across runs.
 
 | Provider | Packet recall | Stale leaks | Packet tokens (median) | Standing overhead tok/turn | Effective tok/turn | Median recall ms | Net connections (ingest/recall) | Offline recall | Model-visible tools |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | ---: |
-| **cortext** | **10/14 facts** | **0** | **125** | **0** | **125** | **63** | **0/0** | **6/6 probes** | **0** |
+| **cortext** | **10/14 facts** | **0** | **194** | **0** | **194** | **15** | **0/0** | **6/6 probes** | **0** |
 | mem0 (60.5K★, most popular) | 8/14 facts | 1 | 131 | 304 | 435 | 459 | 9/1 | 0/6 probes | 3 |
 | tencentdb (Tencent Cloud, 4-tier) | 4/14 facts | 1 | 970 | 417 | 1387 | 169 | 0/0¹ | n/a (sidecar)¹ | 2 |
 | holographic (built-in default) | 0/14 facts | 0 | 0 | 632 | 632 | 0 | 0/0 | 0/6 probes | 2 |
 | holographic-tools (steelman) | 0/14 facts | 0 | 0 | 632 | 632 | 0 | 0/0 | 0/6 probes | 2 |
 
-Cortext runs its tuned plugin defaults (`focus 0.45, stability 0.50, top_k 8`),
-selected by sweeping knobs on this scenario with N=5 repeated runs (the
-scenario itself was frozen first). It is the only system above with zero
-stale leaks: the superseded appointment never resurfaces.
+Cortext runs its tuned defaults (`focus 0.45, stability 0.50`), selected by
+sweeping the engine knobs on this scenario with N=5 repeated runs (the
+scenario itself was frozen first). The plugin injects everything the engine
+retrieves — no plugin-side result cap. The engine is not run-deterministic:
+across 5 repeated runs this configuration measured 10/14 four times and 9/14
+(with one stale leak) once; the table shows the modal run. It is the only
+system above with zero stale leaks: the superseded appointment never
+resurfaces.
 
 ¹ TencentDB's provider talks to a loopback Node Gateway sidecar; the sidecar's
 own network use (OpenAI embeddings + LLM extraction for every capture) is not
@@ -34,9 +38,9 @@ meaningless for it.
 **Standing overhead** is what the provider injects into *every* model call
 regardless of recall: its tool JSON schemas plus its branded system-prompt
 block (measured live, estimated at 4 chars/token). Cortext exposes no tools
-and no system-prompt block, so its per-turn cost is the packet alone: **125
-effective tokens per turn versus Mem0's 435 (3.5×) and TencentDB's 1387
-(11×)** — at the best packet recall in the table — while recalling ~7×
+and no system-prompt block, so its per-turn cost is the packet alone: **194
+effective tokens per turn versus Mem0's 435 (2.2×) and TencentDB's 1387
+(7×)** — at the best packet recall in the table — while recalling ~30×
 faster than Mem0, fully offline, with zero LLM calls spent maintaining
 memory. Tool-call *round trips* (a model invoking `mem0_search` etc. and
 re-prompting) are additional and not counted here.
@@ -45,20 +49,22 @@ re-prompting) are additional and not counted here.
 
 | Probe | control | cortext | holographic | holographic-tools | mem0 | tencentdb | Winner |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| vet-supersession | 1 | 9 | 1 | 1 | 2 | 10 | tencentdb |
-| deploy-process | 1 | 8 | 1 | 1 | 10 | 8 | mem0 |
-| auth-owner | 0 | 10 | 0 | 0 | 0 | 0 | cortext |
+| vet-supersession | 10 | 9 | 10 | 10 | 2 | 10 | tie |
+| deploy-process | 1 | 7 | 1 | 1 | 10 | 7 | mem0 |
+| auth-owner | 1 | 10 | 1 | 1 | 1 | 1 | cortext |
 | travel-plans | 2 | 10 | 2 | 2 | 2 | 6 | cortext |
 | language-preference | 2 | 10 | 2 | 2 | 10 | 2 | tie |
 | unknown-bait | 10 | 10 | 10 | 10 | 10 | 10 | tie |
 
-Total scores: **cortext 57**, tencentdb 36, mem0 34, control 16. Cortext
-scores 8+ on every probe with reference facts — the only system that does —
-from the smallest packets in the table. Judge scores are a single rep per
-probe (noisy across runs; treat as directional); the cost/latency/privacy
-columns are the reproducible part. TencentDB buys its supersession win with
-970-token packets and an LLM+embedding call on every capture; Cortext
-delivers this from 125-token packets with no LLM in the loop at all.
+Total scores: **cortext 56**, tencentdb 36, mem0 35, control 26. Cortext
+scores 7+ on every probe — the only system that does — from the smallest
+packets in the table. Judge scores are a single rep per probe and visibly
+noisy across runs (this probe set has seen the control's vet-supersession
+score swing from 0 to 10 between runs); treat the judge table as
+directional and the cost/latency/privacy columns as the reproducible part.
+TencentDB matches Cortext on the supersession probe using 970-token packets
+and an LLM+embedding call on every capture; Cortext does it from 194-token
+packets with no LLM in the loop at all.
 
 ## Method
 
